@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>verdaccioMate</title>
+<meta name="description" content="Verdaccio Mate 挂载 原版 Verdaccio 的存储目录，把缓存黑盒变成可查、可预警、可清理的清单：来源识别、版本预警与清理、npm Top1000 预置、操作审计，另有 8 个只读 MCP 工具供 AI 客户端查询。">
+<link rel="canonical" href="http://www.abcxyz.site/verdaccioMate/index.html">
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+<link rel="alternate icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/img/favicon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png">
+
+<meta name="theme-color" content="#ECEFF4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#141414" media="(prefers-color-scheme: dark)">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Verdaccio Mate">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:url" content="http://www.abcxyz.site/verdaccioMate/index.html">
+<meta property="og:title" content="Verdaccio Mate · 原版 Verdaccio 私有 npm 源可视化治理工具">
+<meta property="og:description" content="缓存目录透视、来源识别、版本预警与清理、Top1000 预置、操作审计，外加 8 个只读 MCP 工具。Docker 单容器部署。">
+<meta property="og:image" content="http://www.abcxyz.site/verdaccioMate/assets/img/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Verdaccio Mate 概览页：包数量、占用空间、预警数量与可清理空间">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Verdaccio Mate · 原版 Verdaccio 私有 npm 源可视化治理工具">
+<meta name="twitter:description" content="缓存目录透视、来源识别、版本预警与清理、Top1000 预置、操作审计，外加 8 个只读 MCP 工具。">
+<meta name="twitter:image" content="http://www.abcxyz.site/verdaccioMate/assets/img/og-cover.png">
+
+<link rel="stylesheet" href="assets/site.css?v=20261116a">
+<script>
+  (function () {
+    var t = null;
+    try { t = localStorage.getItem('vcm-site-theme'); } catch (e) { /* 存储不可用则跟随系统 */ }
+    var dark = t ? t === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (dark) document.documentElement.classList.add('dark');
+  })();
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Verdaccio Mate",
+  "url": "http://www.abcxyz.site/verdaccioMate/index.html",
+  "description": "原版 Verdaccio 私有 npm 源的可视化治理工具官网：功能、部署与 MCP 接入说明。",
+  "inLanguage": "zh-CN"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Verdaccio Mate",
+  "alternateName": "原版 Verdaccio 缓存可视化管理工具",
+  "url": "http://www.abcxyz.site/verdaccioMate/index.html",
+  "image": "http://www.abcxyz.site/verdaccioMate/assets/img/og-cover.png",
+  "applicationCategory": "DeveloperApplication",
+  "applicationSubCategory": "npm 私有仓库治理工具",
+  "operatingSystem": "Linux, Docker",
+  "softwareVersion": "1.0.0",
+  "description": "对原版 Verdaccio 私有 npm 源的缓存目录与私有包做可视化治理：异步扫描缓存、识别私有发布与上游代理来源、按阈值预警并清理低版本、拉取存量包最新版、维护 npm Top1000 榜单、渲染 README 与安装命令、记录操作日志与消息通知，并通过只读 MCP 端点向 AI 客户端开放查询。",
+  "license": "https://www.apache.org/licenses/LICENSE-2.0",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CNY" },
+  "featureList": [
+    "缓存目录异步扫描与占用透视",
+    "私有发布包与上游代理缓存包来源识别",
+    "版本数阈值预警与低版本清理",
+    "存量包一键拉取最新版本",
+    "npm Top1000 周榜抓取与未缓存比对",
+    "README Markdown 渲染与安装命令复制",
+    "操作日志审计与消息中心",
+    "每日扫描与每周抓榜定时任务",
+    "只读 MCP Streamable HTTP 端点（8 个工具）",
+    "htpasswd 用户管理与 Verdaccio Mate 内置账号登录",
+    "亮色/暗色双主题与三端响应式布局"
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">跳至主要内容</a>
+
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="index.html">
+      <img src="assets/img/logo.svg" alt="Verdaccio Mate 标识" width="34" height="34">
+      <span class="brand-text">
+        <span class="brand-name">Verdaccio Mate</span>
+        <span class="brand-sub">原版 Verdaccio 的得力伙伴</span>
+      </span>
+    </a>
+    <nav class="nav" aria-label="主导航">
+      <a href="index.html" aria-current="page">首页</a>
+      <a href="docs.html">技术文档</a>
+      <a href="faq.html">FAQ</a>
+    </nav>
+    <button class="theme-btn" id="theme-toggle" type="button" aria-label="切换到深色主题" title="切换主题">
+      <svg class="icon-moon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 8.8 9.8z"/></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero">
+    <div class="wrap">
+      <h1>给原版 Verdaccio 补上<em>可视化治理</em>的那一半</h1>
+      <p class="hero-lead">
+        原版 Verdaccio 只负责存取，不提供治理能力：缓存目录是黑盒，版本随安装无限膨胀，超量版本只能进目录手工删除，
+        私有包与代理缓存包混在一起分不清。Verdaccio Mate 直接挂载它的存储目录，把这些补齐成一套 Verdaccio Mate——
+        扫描、识别、预警、清理、预置、审计，外加一个只读 MCP 端点让 AI 客户端也能查私服。
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <figure class="shot">
+        <img src="assets/img/shot-overview-light.webp" alt="Verdaccio Mate 概览页：四张主统计卡展示包数量 56、占用空间 7.1 GB、预警数量 32、可清理空间 6.1 GB，下方为缓存占用 Top 20 排行与需要关注的包卡片" width="1440" height="900" fetchpriority="high">
+        <figcaption><b>概览页</b> · 主统计卡按私有包 / 缓存包分段，Top 20 排行与预警卡片同屏可见（截图数据来自内置演示缓存目录）</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2><svg class="sec-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>四类问题，四类解法</h2>
+      </div>
+      <div class="grid g-2">
+        <article class="card pain">
+          <h3>缓存目录是黑盒</h3>
+          <p class="fix"><b>解法</b>：异步扫描存储目录，包数 / 版本数 / 占用 / 分布全部落到统计卡与 Top 20 排行。</p>
+        </article>
+        <article class="card pain">
+          <h3>版本无限膨胀</h3>
+          <p class="fix"><b>解法</b>：全局阈值加单包例外，超量即预警，一键清理低版本、保留最新 N 版。</p>
+        </article>
+        <article class="card pain">
+          <h3>手工删目录危险</h3>
+          <p class="fix"><b>解法</b>：清理走 Verdaccio Mate 原子操作，不受并发扫描影响，每次删除写入日志、按批次可追溯。</p>
+        </article>
+        <article class="card pain">
+          <h3>只能缓存「用过的包」</h3>
+          <p class="fix"><b>解法</b>：每周抓取 npm Top1000 周榜，与本地缓存比对后一键预置热门依赖。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="features">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2><svg class="sec-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>13 项能力，一句话讲完</h2>
+        <p>每项能力的数据口径、并发行为与边界都写在技术文档里，这里只回答「它做什么」。</p>
+      </div>
+      <div class="grid g-3">
+        <article class="card"><h3>缓存扫描</h3><p>异步扫描存储目录，增量复用上次结果，实时呈现进度。</p></article>
+        <article class="card"><h3>来源识别</h3><p>私有发布包与上游代理缓存包分开标注、可筛选。</p></article>
+        <article class="card"><h3>版本预警</h3><p>超过阈值置顶提示，快照去重后推送通知，单包可设例外。</p></article>
+        <article class="card"><h3>清理低版本</h3><p>一键保留最新 N 版，删除走原子操作并按批次留痕。</p></article>
+        <article class="card"><h3>存量最新版拉取</h3><p>经原版 Verdaccio 代理逐包落盘，失败明细分开呈现。</p></article>
+        <article class="card"><h3>npm Top1000 榜单</h3><p>每周定时抓取周榜，与本地缓存比对后一键预置。</p></article>
+        <article class="card"><h3>包详情洞察</h3><p>README 渲染、逐版本大小与发布日期、安装命令一键复制。</p></article>
+        <article class="card"><h3>检索与联想</h3><p>输入即联想、多维筛选排序，虚拟滚动承载大目录。</p></article>
+        <article class="card"><h3>日志与消息中心</h3><p>全部操作统一审计，按批次号回查；预警进消息中心。</p></article>
+        <article class="card"><h3>用户管理</h3><p>读写原版 Verdaccio 的 htpasswd，其用户可直接登录。</p></article>
+        <article class="card"><h3>定时任务</h3><p>每日凌晨自动扫描、每周一抓取周榜，失败自动冷却。</p></article>
+        <article class="card"><h3>只读 MCP 工具</h3><p>8 个查询工具开放给 AI 客户端，详见<a href="docs.html#mcp"> MCP 接入</a>。</p></article>
+        <article class="card"><h3>三端三主题</h3><p>亮暗双主题、按日出日落自动切换，桌面平板手机一套代码。</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2><svg class="sec-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>同一套界面，三端三主题</h2>
+        <p>亮色默认、暗色对齐 Element Plus 暗色变量，也可按部署地日出日落自动切换；桌面、平板、手机共用一套代码。</p>
+      </div>
+      <div class="grid g-2">
+        <figure class="shot">
+          <img src="assets/img/shot-overview-dark.webp" alt="暗色主题下的概览页，页面底色转为深灰，统计卡与排行表保持同一套语义色" width="1440" height="900" loading="lazy">
+          <figcaption><b>暗色主题</b> · 石墨主色在暗色下反转成白底深字，红点缀提亮到 <code class="num">#E2556B</code></figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="assets/img/shot-search.webp" alt="软件包检索页：搜索框、结果表格每行带私有包或缓存包来源徽标、版本数与占用空间" width="1440" height="900" loading="lazy">
+          <figcaption><b>软件包检索</b> · 每行标注来源徽标、版本数与占用，行内直接清理或忽略</figcaption>
+        </figure>
+      </div>
+      <div class="grid g-2" style="margin-top: 16px">
+        <figure class="shot">
+          <img src="assets/img/shot-detail.webp" alt="包详情抽屉：安装命令一键复制、版本列表逐条给出大小与发布日期、底部一键清理与忽略" width="1440" height="900" loading="lazy">
+          <figcaption><b>包详情抽屉</b> · 安装命令、版本明细、超阈值数量与清理入口</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="assets/img/shot-mobile-light.webp" alt="手机端概览页：统计卡两列排布，底部为首页、软件包、Top 榜、操作日志四项标签导航" width="390" height="844" loading="lazy">
+          <figcaption><b>手机端</b> · 统计卡 2×2、页面切换走底部标签、设置类收进抽屉</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2><svg class="sec-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="8" width="16" height="12" rx="2"/><line x1="12" y1="8" x2="12" y2="4"/><circle cx="12" cy="3" r="1"/><line x1="8" y1="13.5" x2="8" y2="13.51"/><line x1="16" y1="13.5" x2="16" y2="13.51"/><path d="M9.5 17h5"/></svg>拥抱AI</h2>
+        <p>Verdaccio Mate 暴露一个 Streamable HTTP 端点 <code class="num">/mcp</code>，用只读 Key 认证。一期开放 8 个查询工具，不提供删除、清理或改用户的能力。</p>
+      </div>
+      <div class="grid g-2">
+        <figure class="shot">
+          <img src="assets/img/shot-mcp.webp" alt="MCP 接入弹窗：端点地址、每个 Key 每分钟 30 次限速说明、有效 Key 列表与生成按钮" width="1440" height="900" loading="lazy">
+          <figcaption><b>MCP 接入弹窗</b> · 生成只读 Key 后一键复制完整客户端配置</figcaption>
+        </figure>
+        <div>
+          <ul class="feat-list">
+            <li><b>只读边界</b>：8 个工具全部只查询，不改缓存、不改用户、不触发重扫。</li>
+            <li><b>Key 管理</b>：Verdaccio Mate 内创建与吊销，密文存储、随时可撤销。</li>
+            <li><b>限速与审计</b>：单 Key 限速、失败锁定，全部调用可追溯。</li>
+          </ul>
+          <p style="margin-top: 18px"><a class="btn" href="docs.html#mcp">工具清单与接入配置</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2><svg class="sec-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>部署</h2>
+      </div>
+      <ol class="steps">
+        <li><b>构建前端</b>：<code class="num">cd frontend &amp;&amp; npm install &amp;&amp; npm run build</code>，产物随后拷进镜像。</li>
+        <li><b>打镜像</b>：<code class="num">docker build --platform linux/amd64 -t verdaccio-mate:latest .</code>，NAS 上可直接 <code class="num">docker save</code> 成 tar 导入。</li>
+        <li><b>挂目录启动</b>：把原版 Verdaccio 的存储目录挂进容器，Verdaccio Mate 端口映射后即可登录。</li>
+      </ol>
+      <div class="code" style="margin-top: 18px">services:
+  verdaccio-mate:
+    image: verdaccio-mate:latest
+    restart: unless-stopped
+    user: "0:0"                     <i># 清理需写 原版 Verdaccio 缓存卷</i>
+    ports:
+      - "42338:3000"
+    volumes:
+      - /path/to/storage:/storage   <i># 原版 Verdaccio 缓存目录</i>
+      - ./data:/app/data            <i># SQLite 数据</i>
+    environment:
+      - VERDACCIO_STORAGE=/storage
+      - VCM_USERNAME=admin
+      - VCM_PASSWORD=&lt;强密码&gt;
+      - DATA_DIR=/app/data
+      - TZ=Asia/Shanghai</div>
+      <p style="margin-top: 18px"><a class="btn" href="docs.html#deployment">完整环境变量与权限说明</a></p>
+    </div>
+  </section>
+
+  <section class="section closer">
+    <div class="wrap">
+      <h2>把私服缓存纳入治理</h2>
+      <p>技术细节都在技术文档里写清了，按文档走一遍即可上线。</p>
+      <div class="hero-cta">
+        <a class="btn primary" href="docs.html">阅读技术文档</a>
+        <a class="btn" href="faq.html">先看 FAQ</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-in">
+    <span>Verdaccio Mate · 原版 Verdaccio 的得力伙伴</span>
+    <nav aria-label="页脚导航">
+      <a href="docs.html">技术文档</a>
+      <a href="faq.html">FAQ</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="assets/site.js?v=20261116a" defer></script>
+</body>
+</html>

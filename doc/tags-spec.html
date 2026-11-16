@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="zh-CN" class="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Verdaccio Mate · 表格标签设计规范</title>
+<style>
+  :root {
+    --bg:#F5F7FA; --card:#FFFFFF; --card2:#FAFAFA; --line:#E4E7ED; --line2:#D8DCE3;
+    --ink:#303133; --dim:#606266; --faint:#909399; --num-bg:#F5F7FA;
+    --pri:#1F2328; --acc:#C4263B; --acc-soft:#FBEDEF; --acc-line:#F5D7DB;
+    --suc:#67C23A; --suc-soft:#F0F9EB; --suc-line:#E1F3D8; --suc-deep:#529B2E;
+    --warn:#E6A23C; --warn-soft:#FDF6EC; --warn-line:#FAECD8;
+    --dgr:#F56C6C; --dgr-soft:#FEF0F0; --dgr-line:#FDE2E2;
+    --inf:#909399; --inf-soft:#F4F4F5; --inf-line:#E9E9EB;
+    --shadow:0 2px 8px rgba(0,0,0,.06);
+  }
+  html.dark {
+    --bg:#141414; --card:#1D1E1F; --card2:#262627; --line:#414243; --line2:#4C4D4F;
+    --ink:#E5EAF3; --dim:#A3A6AD; --faint:#73767A; --num-bg:#262627;
+    --pri:#E6E8EB; --acc:#E2556B; --acc-soft:rgba(226,85,107,.14); --acc-line:rgba(226,85,107,.32);
+    --suc:#67C23A; --suc-soft:rgba(103,194,58,.14); --suc-line:rgba(103,194,58,.30); --suc-deep:#85CE61;
+    --warn:#E6A23C; --warn-soft:rgba(230,162,60,.14); --warn-line:rgba(230,162,60,.30);
+    --dgr:#F56C6C; --dgr-soft:rgba(245,108,108,.14); --dgr-line:rgba(245,108,108,.30);
+    --inf:#A3A6AD; --inf-soft:rgba(144,147,153,.14); --inf-line:rgba(144,147,153,.30);
+    --shadow:0 1px 2px rgba(0,0,0,.4);
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--bg); color:var(--ink); font:13.5px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif; padding:36px 28px 60px; max-width:1180px; margin:0 auto; }
+  .top { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:6px; }
+  h1 { font-size:20px; letter-spacing:.3px; font-weight:600; }
+  h1 small { font-size:12.5px; color:var(--dim); font-weight:400; margin-left:10px; }
+  .theme-btn { border:1px solid var(--line); background:var(--card); color:var(--dim); border-radius:4px; padding:7px 16px; font-size:12.5px; cursor:pointer; transition:.16s; }
+  .theme-btn:hover { color:var(--acc); border-color:var(--acc); }
+  .lead { color:var(--dim); font-size:12.5px; margin-bottom:28px; }
+  .section { background:var(--card); border:1px solid var(--line); border-radius:6px; padding:24px 26px; margin-bottom:26px; box-shadow:var(--shadow); }
+  .sec-title { font-size:15px; font-weight:600; margin-bottom:4px; display:flex; align-items:center; gap:8px; }
+  .sec-title .no { color:var(--acc); font-family:ui-monospace,Menlo,Consolas,monospace; font-size:12.5px; }
+  .sec-desc { color:var(--dim); font-size:12.5px; margin-bottom:18px; }
+  /* —— 统一标签（与 base.css .tag 一致） —— */
+  .tag { display:inline-flex; align-items:center; gap:4px; height:20px; padding:0 7px; font-size:11px; font-weight:500; border-radius:3px; white-space:nowrap; line-height:1; border:1px solid; }
+  .tag.warn { background:var(--warn-soft); border-color:var(--warn-line); color:var(--warn); }
+  .tag.ok { background:var(--suc-soft); border-color:var(--suc-line); color:var(--suc-deep); }
+  .tag.ign { background:var(--inf-soft); border-color:var(--inf-line); color:var(--inf); }
+  .tag.broken { background:var(--warn-soft); border-color:var(--warn-line); color:var(--warn); }
+  .tag.gray { background:var(--num-bg); border-color:var(--line); color:var(--dim); }
+  /* —— 规格速览 —— */
+  .spec-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:14px; }
+  .spec-item { border:1px dashed var(--line2); border-radius:4px; padding:14px 16px; }
+  .spec-item b { font-size:13px; display:block; margin-bottom:4px; font-weight:600; }
+  .spec-item span { font-size:11.5px; color:var(--dim); }
+  .spec-item code { font-family:ui-monospace,Menlo,Consolas,monospace; font-size:11px; color:var(--acc); }
+  /* —— 色阶矩阵 —— */
+  .tags { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:14px; }
+  .tag-card { border:1px solid var(--line); border-radius:6px; background:var(--card2); padding:16px 14px; display:flex; flex-direction:column; gap:10px; }
+  .tag-card .name { font-size:12.5px; font-weight:600; }
+  .tag-card .cls { font-family:ui-monospace,Menlo,Consolas,monospace; font-size:10.5px; color:var(--faint); }
+  .tag-card .rows { display:flex; flex-direction:column; gap:9px; }
+  .tag-card .row-label { font-size:10.5px; color:var(--faint); }
+  /* —— 场景实景表 —— */
+  .sc-table { width:100%; border-collapse:collapse; }
+  .sc-table th,.sc-table td { text-align:left; padding:10px 14px; border-bottom:1px solid var(--line); font-size:12.5px; }
+  .sc-table th { color:var(--dim); font-weight:600; font-size:11.5px; background:var(--card2); }
+  .sc-table .pkg { display:flex; align-items:center; gap:8px; }
+  /* —— 参差 vs 统一对照 —— */
+  .duo { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  @media (max-width:760px){ .duo { grid-template-columns:1fr; } }
+  .duo-card { border:1px solid var(--line); border-radius:6px; overflow:hidden; }
+  .duo-head { display:flex; align-items:center; gap:8px; padding:10px 14px; border-bottom:1px solid var(--line); font-size:12.5px; font-weight:600; }
+  .duo-head .ok { color:var(--suc-deep); }
+  .duo-head .no { color:var(--dgr); }
+  .duo-row { display:flex; align-items:center; gap:10px; padding:9px 14px; border-bottom:1px solid var(--line); font-size:12px; }
+  .duo-row:last-child { border-bottom:none; }
+  .duo-row .lbl { width:72px; color:var(--faint); font-size:10.5px; flex-shrink:0; }
+  /* —— 禁忌 —— */
+  .bad { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:14px; }
+  .bad-card { border:1px dashed var(--dgr-line); border-radius:6px; padding:16px; background:var(--dgr-soft); }
+  .bad-card .t { color:var(--dgr); font-weight:600; font-size:12.5px; margin-bottom:10px; }
+  .bad-row { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+  .bad-row:last-child { margin-bottom:0; }
+  .bad-x { color:var(--dim); font-size:12px; }
+  .big-tag { display:inline-flex; align-items:center; gap:6px; font-size:14px; font-weight:600; padding:8px 18px; border-radius:14px; background:var(--warn-soft); color:var(--warn); border:1px solid var(--warn-line); }
+  .brdr-tag { display:inline-flex; align-items:center; gap:5px; font-size:12.5px; font-weight:600; padding:5px 12px; border-radius:4px; background:transparent; border:1.5px solid var(--acc); color:var(--acc); }
+  .rect-tag { display:inline-flex; align-items:center; gap:5px; font-size:11.5px; font-weight:600; padding:4px 10px; border-radius:2px; background:var(--suc-soft); color:var(--suc-deep); }
+  .foot { text-align:center; color:var(--faint); font-size:11.5px; margin-top:6px; }
+</style>
+</head>
+<body>
+
+  <div class="top">
+    <h1>表格标签设计规范 <small>Table Tags · Verdaccio Mate</small></h1>
+    <button class="theme-btn" id="themeBtn">切换暗色 / 亮色</button>
+  </div>
+  <p class="lead">基线问题：状态/来源/拉取类型标签高度不一（28~36px）、底色与描边混用、字号 13~15px 不齐。统一走全局 <code>.tag</code> 体系（frontend/src/styles/base.css），比操作按钮小一号。</p>
+
+  <!-- 14.1 规格 -->
+  <section class="section">
+    <div class="sec-title"><span class="no">14.1</span> 通用形态 · 规格速览</div>
+    <div class="sec-desc">3px 小圆角 · 紧凑小号 · 软底同系描边 · 同列同档</div>
+    <div class="spec-grid">
+      <div class="spec-item"><b>圆角 <code>3px</code></b><span>小圆角，禁止胶囊/直角标签</span></div>
+      <div class="spec-item"><b>尺寸 <code>20px / 0 7px</code></b><span>固定高度 20px · padding 0 7px · font-size 11px · line-height 1</span></div>
+      <div class="spec-item"><b>字重 <code>500</code></b><span>全局 .tag 基准，图标与文字 gap 4px</span></div>
+      <div class="spec-item"><b>背景 <code>软底 + 同系描边</code></b><span>soft 底 + 同色系细描边，禁止描边版与透明底混用</span></div>
+      <div class="spec-item"><b>高度 <code>20px</code></b><span>状态列不再出现 32px+ 大标签</span></div>
+      <div class="spec-item"><b>落地 <code>全局声明</code></b><span>组件内只套语义变体类，禁止自写样式（防 scoped 失效）</span></div>
+    </div>
+  </section>
+
+  <!-- 14.2 色阶 -->
+  <section class="section">
+    <div class="sec-title"><span class="no">14.2</span> 语义色阶 · 5 种变体</div>
+    <div class="sec-desc">黄=预警/待处理 · 绿=正常/成功 · 灰蓝=忽略/信息 · 黄=异常/自建（与预警同系） · 中性灰=来源/默认</div>
+    <div class="tags">
+      <div class="tag-card"><div class="name">预警 · warn</div><div class="cls">.tag.warn</div><div class="rows"><span class="row-label">默认</span><span class="tag warn">预警</span><span class="row-label">失败场景</span><span class="tag warn">失败</span></div></div>
+      <div class="tag-card"><div class="name">正常 · ok</div><div class="cls">.tag.ok</div><div class="rows"><span class="row-label">默认</span><span class="tag ok">正常</span><span class="row-label">就绪场景</span><span class="tag ok">已就绪</span></div></div>
+      <div class="tag-card"><div class="name">忽略 · ign</div><div class="cls">.tag.ign</div><div class="rows"><span class="row-label">默认</span><span class="tag ign">已忽略</span><span class="row-label">缓存/信息</span><span class="tag ign">缓存</span></div></div>
+      <div class="tag-card"><div class="name">异常 · broken</div><div class="cls">.tag.broken</div><div class="rows"><span class="row-label">默认</span><span class="tag broken">异常</span><span class="row-label">自建/待处理</span><span class="tag broken">Verdaccio Mate</span></div></div>
+      <div class="tag-card"><div class="name">中性 · gray</div><div class="cls">.tag.gray</div><div class="rows"><span class="row-label">来源</span><span class="tag gray">原版 Verdaccio</span><span class="row-label">跳过</span><span class="tag gray">跳过</span></div></div>
+    </div>
+  </section>
+
+  <!-- 14.3/14.4 场景实景 -->
+  <section class="section">
+    <div class="sec-title"><span class="no">14.3/14.4</span> 场景实景 · 统一后的表格</div>
+    <div class="sec-desc">来源 / 状态 / 拉取类型 / 结果 —— 同一紧凑档位</div>
+    <table class="sc-table">
+      <thead><tr><th>页面</th><th>列</th><th>内容</th></tr></thead>
+      <tbody>
+        <tr><td>用户管理</td><td>来源</td><td><span class="pkg"><span class="tag broken">Verdaccio Mate</span><span class="tag gray">原版 Verdaccio</span></span></td></tr>
+        <tr><td>检索页</td><td>状态</td><td><span class="tag warn">预警</span> <span class="tag ok">正常</span> <span class="tag ign">已忽略</span> <span class="tag broken">异常</span></td></tr>
+        <tr><td>操作日志</td><td>拉取类型</td><td><span class="tag ign">拉取存量包</span> <span class="tag ign">拉取榜单</span></td></tr>
+        <tr><td>操作日志</td><td>结果</td><td><span class="tag ok">成功</span> <span class="tag warn">失败</span> <span class="tag gray">跳过</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 参差 vs 统一 -->
+  <section class="section">
+    <div class="sec-title"><span class="no">14.5</span> 对照 · 参差 vs 统一</div>
+    <div class="sec-desc">同列同档：同尺寸、同圆角、同内边距</div>
+    <div class="duo">
+      <div class="duo-card">
+        <div class="duo-head"><span class="no">✕</span> 参差不齐（旧现状）</div>
+        <div class="duo-row"><span class="lbl">状态</span><span class="big-tag">预警</span><span class="tag gray">正常</span></div>
+        <div class="duo-row"><span class="lbl">来源</span><span class="brdr-tag">Verdaccio Mate</span><span class="tag gray" style="padding:6px 14px">verdaccio</span></div>
+        <div class="duo-row"><span class="lbl">结果</span><span class="rect-tag">成功</span><span class="tag warn" style="font-size:13px;padding:7px 15px">失败</span></div>
+      </div>
+      <div class="duo-card">
+        <div class="duo-head"><span class="ok">✓</span> 统一后（规范）</div>
+        <div class="duo-row"><span class="lbl">状态</span><span class="tag warn">预警</span><span class="tag ok">正常</span></div>
+        <div class="duo-row"><span class="lbl">来源</span><span class="tag broken">Verdaccio Mate</span><span class="tag gray">原版 Verdaccio</span></div>
+        <div class="duo-row"><span class="lbl">结果</span><span class="tag ok">成功</span><span class="tag warn">失败</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 禁忌 -->
+  <section class="section">
+    <div class="sec-title"><span class="no">14.6</span> 禁忌 · 禁止出现在表格</div>
+    <div class="sec-desc">3px 小圆角软底是表格标签唯一合法形态</div>
+    <div class="bad">
+      <div class="bad-card"><div class="t">✕ 大标签（32px+）</div><div class="bad-row"><span class="big-tag">预警</span><span class="bad-x">高度 28~36px，挤压行高</span></div></div>
+      <div class="bad-card"><div class="t">✕ 描边 / 透明底</div><div class="bad-row"><span class="brdr-tag">Verdaccio Mate</span><span class="bad-x">与软底标签混用，视觉断裂</span></div></div>
+      <div class="bad-card"><div class="t">✕ 直角 / 同列不同档</div><div class="bad-row"><span class="rect-tag">成功</span><span class="bad-x">直角圆角并存；同列内字号内边距必须一致</span></div></div>
+    </div>
+  </section>
+
+  <p class="foot">Verdaccio Mate · 表格标签设计规范 · 与 doc/design-spec.md 第 14 章配套</p>
+
+<script>
+  const root = document.documentElement
+  const btn = document.getElementById('themeBtn')
+  btn.addEventListener('click', () => {
+    root.classList.toggle('dark')
+    btn.textContent = root.classList.contains('dark') ? '切换亮色' : '切换暗色'
+  })
+</script>
+</body>
+</html>

@@ -1,0 +1,249 @@
+/* ============================================================
+   全局基础样式 + 通用工具类（常规化：石墨灰 + 红点缀，对齐 Element Plus）
+   ============================================================ */
+@import './tokens.css';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* 预留垂直滚动条槽位：切页/高度变化时滚动条出现消失不会引起布局抖动 */
+  scrollbar-gutter: stable;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+  font-size: 14px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+#app {
+  min-height: 100vh;
+}
+
+a {
+  color: var(--acc);
+  text-decoration: none;
+}
+a:hover { color: var(--acc-h); }
+
+button {
+  font-family: var(--sans);
+}
+
+/* —— Element Plus 暗色模式：主按钮为白底，需深色文字 —— */
+html.dark .el-button--primary {
+  --el-button-text-color: #141414;
+  --el-button-hover-text-color: #141414;
+  --el-button-active-text-color: #141414;
+}
+
+/* —— 页面容器 —— */
+.page {
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: 26px 28px 48px;
+  animation: fadeUp .2s both;
+}
+.page-inner {
+  padding: 22px 28px 40px;
+  max-width: 1480px;
+  margin: 0 auto;
+  animation: fadeUp .2s both;
+}
+.page-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 17px;
+  font-weight: 600;
+}
+.page-sub {
+  font-size: 12.5px;
+  color: var(--ink-dim);
+}
+.page-sub b { color: var(--acc); font-family: var(--num); }
+
+/* —— 按钮（对齐 EP 默认按钮形态） —— */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink-dim);
+  cursor: pointer;
+  font-size: 12.5px;
+  font-weight: 500;
+  padding: 7px 15px;
+  border-radius: var(--r-md);
+  transition: color .12s, border-color .12s, background .12s;
+  white-space: nowrap;
+  user-select: none;
+}
+.btn:hover { color: var(--acc); border-color: var(--acc); }
+.btn:disabled { background: var(--num-bg); border-color: var(--line); color: var(--ink-faint); cursor: not-allowed; }
+/* 主操作：石墨实心；暗色模式白底深字 */
+.btn.clean {
+  background: var(--pri);
+  border-color: var(--pri);
+  color: #fff;
+}
+.btn.clean:hover { background: var(--pri-h); border-color: var(--pri-h); color: #fff; }
+html.dark .btn.clean { color: #141414; }
+html.dark .btn.clean:hover { color: #141414; }
+.btn.ignore { background: var(--card); color: var(--ink-dim); }
+.btn.ignore:hover { color: var(--acc); border-color: var(--acc); }
+.btn.unignore {
+  background: var(--num-bg);
+  border-color: var(--line);
+  color: var(--ink-dim);
+}
+.btn.unignore:hover { color: var(--ink); border-color: var(--ink-faint); }
+.btn.remove { background: var(--dgr-soft); border-color: var(--dgr-line); color: var(--dgr); }
+.btn.remove:hover { background: var(--dgr); border-color: var(--dgr); color: #fff; }
+.btn.ghost {
+  background: var(--card);
+  border: 1px solid var(--line);
+  color: var(--ink-dim);
+}
+.btn.ghost:hover { border-color: var(--acc); color: var(--acc); }
+.btn.disabled { background: var(--num-bg); border-color: var(--line); color: var(--ink-faint); cursor: not-allowed; }
+.btn.block { flex: 1; justify-content: center; padding: 12px 0; }
+/* 表格操作列按钮：小尺寸（全局声明，避免 scoped 在 el-table 单元格内失效） */
+.btn.op-btn-cell {
+  border-radius: var(--r-md);
+  padding: 5px 12px;
+  font-size: 12px;
+  line-height: 1;
+}
+.btn.op-btn-cell + .btn.op-btn-cell { margin-left: 7px; }
+
+/* —— 表格顶部工具栏按钮（图标型） —— */
+.tool-btn {
+  width: 30px; height: 30px;
+  padding: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 15px; line-height: 1;
+  border-radius: var(--r-md);
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink-dim);
+  cursor: pointer; user-select: none;
+  transition: color .12s, border-color .12s;
+}
+.tool-btn .ico { display: inline-block; }
+.tool-btn:hover:not(:disabled) {
+  border-color: var(--acc);
+  color: var(--acc);
+}
+.tool-btn:disabled { opacity: .5; cursor: not-allowed; }
+/* running：仅图标旋转，按钮本体与边框保持静止 */
+.tool-btn.spin .ico { animation: toolSpin 1s linear infinite; }
+@keyframes toolSpin { to { transform: rotate(360deg); } }
+
+/* —— 标签（状态标签体系，对齐 EP tag 形态） —— */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 20px;
+  padding: 0 7px;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1;
+  border-radius: 3px;
+  border: 1px solid;
+  white-space: nowrap;
+}
+.tag.warn { background: var(--warn-soft); border-color: var(--warn-line); color: var(--warn); }
+.tag.ok { background: var(--suc-soft); border-color: var(--suc-line); color: var(--suc-deep); }
+.tag.ign { background: var(--inf-soft); border-color: var(--inf-line); color: var(--inf); }
+.tag.broken { background: var(--warn-soft); border-color: var(--warn-line); color: var(--warn); }
+.tag.gray { background: var(--num-bg); border-color: var(--line); color: var(--ink-dim); }
+
+/* —— 数字字体工具 —— */
+.num { font-family: var(--num); }
+
+/* —— 表格通用（常规无边框风 vtable） —— */
+.vtable {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.vtable table { width: 100%; border-collapse: collapse; }
+.vtable th {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-faint);
+  text-align: left;
+  padding: 11px 16px;
+  border-bottom: 1px solid var(--line);
+  background: var(--panel-soft);
+  white-space: nowrap;
+}
+.vtable td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--line-soft);
+  font-size: 13px;
+  vertical-align: middle;
+}
+.vtable tr:last-child td { border-bottom: none; }
+.vtable tbody tr { cursor: pointer; transition: background .12s; }
+.vtable tbody tr:hover { background: var(--panel-soft); }
+.num-cell { font-family: var(--num); font-weight: 500; font-size: 13px; }
+.date-cell { font-family: var(--num); font-size: 12px; color: var(--ink-dim); white-space: nowrap; }
+
+/* —— 滚动条 —— */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--ink-faint); }
+::-webkit-scrollbar-track { background: transparent; }
+
+/* —— 动效（克制：仅淡入与加载旋转） —— */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes spin360 {
+  from { transform: rotate(0); }
+  to { transform: rotate(360deg); }
+}
+
+/* —— 路由切换过渡 —— */
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition: opacity .15s;
+}
+.fade-slide-enter-from {
+  opacity: 0;
+}
+.fade-slide-leave-to {
+  opacity: 0;
+}
+
+/* —— 响应式断点（桌面 ≥1024 / 平板 768~1023 / 手机 <768） —— */
+@media (max-width: 1023px) {
+  .page { padding: 20px 18px 40px; }
+  .page-inner { padding: 22px 18px 40px; }
+}
+@media (max-width: 767px) {
+  .page { padding: 14px 12px 96px; }
+  .page-inner { padding: 16px 12px 96px; }
+  .page-title { font-size: 16px; }
+  .page-sub { font-size: 12px; }
+}

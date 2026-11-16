@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>技术文档 · verdaccioMate</title>
+<meta name="description" content="Verdaccio Mate 技术文档中心：前后端技术栈、用户体系三种身份与关系边界、Docker 部署与挂载权限、环境变量、MCP 端点与 Key 管理，按代码实际行为逐篇写清。">
+<link rel="canonical" href="http://www.abcxyz.site/verdaccioMate/docs.html">
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+<link rel="alternate icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/img/favicon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png">
+
+<meta name="theme-color" content="#ECEFF4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#141414" media="(prefers-color-scheme: dark)">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Verdaccio Mate">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:url" content="http://www.abcxyz.site/verdaccioMate/docs.html">
+<meta property="og:title" content="技术文档 · Verdaccio Mate 部署与机制详解">
+<meta property="og:description" content="部署与配置、用户体系、MCP 接入三篇技术文档，按代码实际行为逐项写清边界与口径。">
+<meta property="og:image" content="http://www.abcxyz.site/verdaccioMate/assets/img/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="技术文档 · Verdaccio Mate 部署与机制详解">
+<meta name="twitter:description" content="部署与配置、用户体系、MCP 接入三篇技术文档。">
+<meta name="twitter:image" content="http://www.abcxyz.site/verdaccioMate/assets/img/og-cover.png">
+
+<link rel="stylesheet" href="assets/site.css?v=20261117a">
+<script>
+  (function () {
+    var t = null;
+    try { t = localStorage.getItem('vcm-site-theme'); } catch (e) { /* 存储不可用则跟随系统 */ }
+    var dark = t ? t === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (dark) document.documentElement.classList.add('dark');
+  })();
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Verdaccio Mate 技术文档",
+  "url": "http://www.abcxyz.site/verdaccioMate/docs.html",
+  "inLanguage": "zh-CN",
+  "description": "Verdaccio Mate 技术文档中心：部署与配置、用户体系、MCP 接入三篇深度文档（Markdown 渲染）。"
+}
+</script>
+<!-- Markdown 渲染依赖：与 Verdaccio Mate 详情抽屉同款 marked + DOMPurify -->
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js" defer></script>
+<!-- docs/*.md 的内嵌副本：file:// 直开或 fetch 失败时兜底（tools/build-docs-content.mjs 生成） -->
+<script src="assets/docs-content.js?v=20261117a" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">跳至主要内容</a>
+
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="index.html">
+      <img src="assets/img/logo.svg" alt="Verdaccio Mate 标识" width="34" height="34">
+      <span class="brand-text">
+        <span class="brand-name">Verdaccio Mate</span>
+        <span class="brand-sub">原版 Verdaccio 的得力伙伴</span>
+      </span>
+    </a>
+    <nav class="nav" aria-label="主导航">
+      <a href="index.html">首页</a>
+      <a href="docs.html" aria-current="page">技术文档</a>
+      <a href="faq.html">FAQ</a>
+    </nav>
+    <button class="theme-btn" id="theme-toggle" type="button" aria-label="切换到深色主题" title="切换主题">
+      <svg class="icon-moon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 8.8 9.8z"/></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+  <div class="wrap">
+    <div class="docs-layout">
+      <nav class="docs-nav" aria-label="文档目录">
+        <p class="docs-nav-title">文档列表</p>
+        <ul id="docs-list"></ul>
+        <noscript><p class="docs-noscript">目录需要启用 JavaScript；也可直接访问 <a href="docs/deployment.md">Markdown 源文件</a>。</p></noscript>
+      </nav>
+      <article class="docs-body" id="docs-article" aria-live="polite">
+        <div class="docs-toc" id="docs-toc" hidden></div>
+        <div class="md-body" id="md-body">
+          <p class="docs-loading">正在加载文档…</p>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <noscript>
+    <div class="wrap section">
+      <div class="card">
+        <h3>本页需要 JavaScript</h3>
+        <p>技术文档由前端读取 Markdown 文件渲染。若无法启用脚本，可直接阅读源文件：
+          <a href="docs/deployment.md">部署与配置</a> ·
+          <a href="docs/users.md">用户体系</a> ·
+          <a href="docs/mcp.md">MCP 接入</a> ·
+          <a href="docs/tech-stack.md">技术栈</a>。
+        </p>
+      </div>
+    </div>
+  </noscript>
+
+  <section class="section closer">
+    <div class="wrap">
+      <h2>文档之外</h2>
+      <p>高频问题看 FAQ；功能边界与口径看<a href="index.html#features">首页功能区</a>。</p>
+      <div class="hero-cta">
+        <a class="btn primary" href="faq.html">FAQ</a>
+        <a class="btn" href="index.html#features">功能一览</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-in">
+    <span>Verdaccio Mate · 原版 Verdaccio 的得力伙伴</span>
+    <nav aria-label="页脚导航">
+      <a href="docs.html">技术文档</a>
+      <a href="faq.html">FAQ</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="assets/docs.js?v=20261117a" defer></script>
+<script src="assets/site.js?v=20261117a" defer></script>
+</body>
+</html>

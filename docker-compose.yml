@@ -1,0 +1,33 @@
+# Verdaccio Mate · 可视化管理工具（缓存 + 私有包治理，§12.2 Docker 部署）
+# 原版 Verdaccio 已独立部署，此处仅运行 Verdaccio Mate。
+# storage 需读写挂载：清理版本要删除 .tgz 并回写 package.json 元数据（只读会报 EROFS）；
+# 容器以 root 运行以写入 verdaccio 卷（其属主为 verdaccio 用户 uid 10001，非本容器 uid 10000）
+services:
+  verdaccio-mate:
+    image: verdaccio-mate:latest   # 已导入的 amd64 镜像（docker load 后直接可用）
+    restart: always
+    user: "0:0"                              # root：清理需写 verdaccio 卷；vcm-data 命名卷 root 亦可写
+    environment:
+      - VERDACCIO_STORAGE=/verdaccio/storage  # 容器内路径，对应下方挂载的右侧
+      - VERDACCIO_BASE_URL=${VERDACCIO_BASE_URL:-http://218.61.196.156:11691}  # 私服地址：查询最新版与代拉均走它（容器内不能用 127.0.0.1；上游由 原版 Verdaccio 自身 uplinks 路由）
+      - PORT=3000
+      - TZ=Asia/Shanghai                        # 每日 03:00 自动扫描、每周一 00:00 抓榜按北京时间执行
+      - VCM_USERNAME=${VCM_USERNAME:-admin}     # Verdaccio Mate 登录账号（可在宿主机 .env 覆盖）
+      - VCM_PASSWORD=${VCM_PASSWORD:-666666}  # Verdaccio Mate 登录密码（默认 666666，可在宿主机 .env 覆盖）
+      # MCP 端点额外信任的 Host（逗号分隔精确值，可含端口）：
+      # 当前按 IP 访问无需配置；日后改用域名访问 /mcp 时必须解除注释并填写，否则 MCP 请求返回 403
+      # - MCP_ALLOWED_HOSTS=mcp.example.com
+      - VERDACCIO_HTPASSWD=/verdaccio/htpasswd # 原版 Verdaccio 原版 htpasswd（读写：用户增删改密；未挂载/缺失时该接口返回未找到）
+      # 部署地坐标手动指定（可选）：优先级高于公网 IP 定位；解除注释并填经纬度即生效
+      # - VCM_LAT=31.23
+      # - VCM_LNG=121.47
+      - UV_THREADPOOL_SIZE=8                    # libuv IO 线程池（默认4→8）：扫描/stat 并发更高，NAS 四核安全
+    volumes:
+      - "/volume2/docker/verdaccio_verdaccio-1/verdaccio_storage:/verdaccio/storage"   # 原版 Verdaccio 缓存目录（读写，清理需要）
+      # 原版 Verdaccio 用户文件（读写，供 Verdaccio Mate 增删用户/改密）：host 路径可在 .env 设 VERDACCIO_HTPASSWD_FILE=绝对路径 覆盖
+      - "${VERDACCIO_HTPASSWD_FILE:-/volume2/docker/verdaccio_verdaccio-1/verdaccio_conf/htpasswd}:/verdaccio/htpasswd"
+      # 数据目录：默认 bind mount 到宿主机 /volume2/docker/verdaccio-manager/data，
+      # 可在 NAS 文件管理器里直接查看/备份/修改 manager.db；如需改路径，在 .env 设 VCM_DATA_DIR=绝对路径
+      - "${VCM_DATA_DIR:-/volume2/docker/verdaccio-cache-manager/data}:/app/data"              # SQLite 数据（manager.db + WAL）+ MCP Key 主密钥 mcp_key_vault.key（备份需一并带走）
+    ports:
+      - "42338:3000"

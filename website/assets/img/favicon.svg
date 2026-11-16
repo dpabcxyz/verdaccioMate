@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="g-graphite" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2A2E33"/>
+      <stop offset="1" stop-color="#1F2328"/>
+    </linearGradient>
+    <linearGradient id="g-red" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#D23A50"/>
+      <stop offset="1" stop-color="#C4263B"/>
+    </linearGradient>
+    <linearGradient id="g-tile" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#F2F3F5"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="3" y="3" width="94" height="94" rx="37" fill="url(#g-tile)"/>
+  <rect x="3" y="3" width="94" height="94" rx="37" fill="none" stroke="#FFFFFF" stroke-opacity="0.9" stroke-width="1.6"/>
+
+  <g transform="translate(22 29)">
+    <path d="M48 17.6 L32.8 48 H24 L.4 .8 h15.2 l12.8 25.6 4.4 -8.8 H48 z" fill="url(#g-graphite)" stroke="url(#g-graphite)" stroke-width="2.4" stroke-linejoin="square"/>
+    <path d="M50.8 12 H35.6 L41.2 .8 h15.2 L50.8 12 z" fill="url(#g-red)" stroke="url(#g-red)" stroke-width="2.4" stroke-linejoin="square"/>
+  </g>
+  <path d="M54.06 75.8 l2.575 -5.112 L36.857 31 H24.342 l22.4 44.8 h7.319 z" fill="url(#g-graphite)" stroke="url(#g-graphite)" stroke-width="2.4" stroke-linejoin="square"/>
+  <path d="M59.6 31h15.221M55.6 35h15.221M51.6 39.8h15.221" stroke="url(#g-red)" stroke-width="2.4" stroke-linecap="square"/>
+</svg>

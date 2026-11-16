@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: http://www.abcxyz.site/verdaccioMate/sitemap.xml

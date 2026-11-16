@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="zh-CN" class="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Verdaccio Mate · 表格顶部工具栏按钮设计规范（图标型 · 无背景色）</title>
+<style>
+  :root {
+    --bg:#F5F7FA; --card:#FFFFFF; --card2:#FAFAFA; --line:#E4E7ED; --line2:#D8DCE3;
+    --ink:#303133; --dim:#606266; --faint:#909399; --num-bg:#F5F7FA;
+    --pri:#1F2328; --pri-h:#3A4047; --acc:#C4263B; --acc-soft:#FBEDEF; --acc-line:#F5D7DB;
+    --suc:#67C23A; --suc-soft:#F0F9EB; --suc-line:#E1F3D8; --suc-deep:#529B2E;
+    --warn:#E6A23C; --warn-soft:#FDF6EC; --warn-line:#FAECD8;
+    --dgr:#F56C6C; --dgr-soft:#FEF0F0; --dgr-line:#FDE2E2;
+    --inf:#909399; --inf-soft:#F4F4F5; --inf-line:#E9E9EB;
+    --shadow:0 2px 8px rgba(0,0,0,.06);
+  }
+  html.dark {
+    --bg:#141414; --card:#1D1E1F; --card2:#262627; --line:#414243; --line2:#4C4D4F;
+    --ink:#E5EAF3; --dim:#A3A6AD; --faint:#73767A; --num-bg:#262627;
+    --pri:#E6E8EB; --pri-h:#FFFFFF; --acc:#E2556B; --acc-soft:rgba(226,85,107,.14); --acc-line:rgba(226,85,107,.32);
+    --suc:#67C23A; --suc-soft:rgba(103,194,58,.14); --suc-line:rgba(103,194,58,.30); --suc-deep:#85CE61;
+    --warn:#E6A23C; --warn-soft:rgba(230,162,60,.14); --warn-line:rgba(230,162,60,.30);
+    --dgr:#F56C6C; --dgr-soft:rgba(245,108,108,.14); --dgr-line:rgba(245,108,108,.30);
+    --inf:#A3A6AD; --inf-soft:rgba(144,147,153,.14); --inf-line:rgba(144,147,153,.30);
+    --shadow:0 1px 2px rgba(0,0,0,.4);
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--bg); color:var(--ink); font:13.5px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif; padding:36px 28px 60px; max-width:1180px; margin:0 auto; }
+  .top { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:6px; }
+  h1 { font-size:19px; letter-spacing:.3px; font-weight:600; }
+  h1 small { font-size:12.5px; color:var(--dim); font-weight:400; margin-left:10px; }
+  .theme-btn { border:1px solid var(--line); background:var(--card); color:var(--dim); border-radius:4px; padding:7px 16px; font-size:12.5px; cursor:pointer; transition:.16s; }
+  .theme-btn:hover { color:var(--acc); border-color:var(--acc); }
+  .lead { color:var(--dim); font-size:12.5px; margin-bottom:28px; }
+  .lead code { font-family:ui-monospace,Menlo,Consolas,monospace; font-size:11.5px; color:var(--acc); }
+  .section { background:var(--card); border:1px solid var(--line); border-radius:6px; padding:24px 26px; margin-bottom:26px; box-shadow:var(--shadow); }
+  .sec-title { font-size:15px; font-weight:600; margin-bottom:4px; display:flex; align-items:center; gap:8px; }
+  .sec-title .no { color:var(--acc); font-family:ui-monospace,Menlo,Consolas,monospace; font-size:12.5px; }
+  .sec-desc { color:var(--dim); font-size:12.5px; margin-bottom:18px; }
+  /* —— 统一工具栏按钮（与 base.css .tool-btn 一致：无背景色） —— */
+  .tool-btn {
+    width:30px; height:30px;
+    display:inline-flex; align-items:center; justify-content:center;
+    font-size:15px; line-height:1;
+    border-radius:4px;
+    border:1px solid var(--line);
+    background:var(--card);
+    color:var(--ink-dim);
+    cursor:pointer; user-select:none;
+    transition:color .12s,border-color .12s;
+    font-family:inherit;
+    padding:0;
+  }
+  .tool-btn .ico { display:inline-flex; }
+  .tool-btn:hover:not(:disabled) { border-color:var(--acc); color:var(--acc); }
+  .tool-btn:disabled { opacity:.5; cursor:not-allowed; }
+  /* running：仅图标旋转，按钮本体与边框不动 */
+  .tool-btn.spin .ico { animation:toolSpin 1s linear infinite; }
+  @keyframes toolSpin { to { transform:rotate(360deg); } }
+  /* —— 旧版（彩色背景，禁止） —— */
+  .tool-btn-old.clean { background:var(--pri); color:#fff; border-color:transparent; }
+  .tool-btn-old.ignore { background:var(--inf-soft); color:var(--inf); border-color:transparent; }
+  .tool-btn-old { width:auto; height:38px; padding:0 16px; font-size:13px; border-radius:4px; display:inline-flex; align-items:center; gap:6px; border:1px solid var(--line); background:var(--card); color:var(--ink); cursor:pointer; }
+  .text-btn { height:38px; padding:0 16px; font-size:13px; border-radius:4px; display:inline-flex; align-items:center; gap:6px; border:1px solid var(--line); background:var(--card); color:var(--ink); }
+  /* —— 规格速览 —— */
+  .spec-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:14px; }
+  .spec-item { border:1px dashed var(--line2); border-radius:4px; padding:14px 16px; }
+  .spec-item b { font-size:13px; display:block; margin-bottom:4px; font-weight:600; }
+  .spec-item span { font-size:11.5px; color:var(--dim); }
+  .spec-item code { font-family:ui-monospace,Menlo,Consolas,monospace; font-size:11px; color:var(--acc); }
+  /* —— 统一形态展示 —— */
+  .stage { border:1px solid var(--line); border-radius:6px; background:var(--bg); padding:22px; display:flex; flex-direction:column; gap:16px; }
+  .stage-label { font-size:11px; color:var(--faint); letter-spacing:1px; }
+  .row-actions { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .row-actions .gap { width:24px; }
+  .hint { font-size:11px; color:var(--faint); margin-top:8px; }
+  /* —— 交互态 —— */
+  .interact { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; }
+  .ix-card { border:1px solid var(--line); border-radius:6px; background:var(--card2); padding:16px 14px; display:flex; flex-direction:column; gap:12px; }
+  .ix-card .name { font-size:12.5px; font-weight:600; }
+  .ix-card .cls { font-family:ui-monospace,Menlo,Consolas,monospace; font-size:10.5px; color:var(--faint); }
+  /* —— 对照 —— */
+  .duo { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  @media (max-width:760px){ .duo { grid-template-columns:1fr; } }
+  .duo-card { border:1px solid var(--line); border-radius:6px; overflow:hidden; }
+  .duo-head { display:flex; align-items:center; gap:8px; padding:10px 14px; border-bottom:1px solid var(--line); font-size:12.5px; font-weight:600; }
+  .duo-head .ok { color:var(--suc-deep); }
+  .duo-head .no { color:var(--dgr); }
+  .duo-row { display:flex; align-items:center; gap:10px; padding:12px 14px; border-bottom:1px solid var(--line); font-size:12px; flex-wrap:wrap; }
+  .duo-row:last-child { border-bottom:none; }
+  .duo-row .lbl { width:76px; color:var(--faint); font-size:10.5px; flex-shrink:0; }
+  /* —— 实景 —— */
+  .live { display:flex; flex-direction:column; gap:18px; }
+  .live-bar { border:1px solid var(--line); border-radius:6px; background:var(--card2); padding:12px 16px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+  .live-bar .left { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .live-bar .tabs { display:flex; gap:6px; }
+  .tab { font-size:12px; color:var(--dim); padding:6px 14px; border-radius:4px; border:1px solid var(--line); background:var(--card); cursor:pointer; }
+  .tab.on { color:var(--acc); border-color:var(--acc); font-weight:600; background:var(--acc-soft); }
+  .live-bar .right { display:flex; align-items:center; gap:10px; }
+  .live-tag { font-size:11px; color:var(--faint); }
+  /* —— 禁忌 —— */
+  .bad { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:14px; }
+  .bad-card { border:1px dashed var(--dgr-line); border-radius:6px; padding:16px; background:var(--dgr-soft); }
+  .bad-card .t { color:var(--dgr); font-weight:600; font-size:12.5px; margin-bottom:10px; }
+  .bad-row { display:flex; align-items:center; gap:10px; margin-bottom:10px; flex-wrap:wrap; }
+  .bad-row:last-child { margin-bottom:0; }
+  .bad-x { color:var(--dim); font-size:12px; }
+  .foot { text-align:center; color:var(--faint); font-size:11.5px; margin-top:6px; }
+  .ico svg { display:block; }
+</style>
+</head>
+<body>
+
+  <div class="top">
+    <h1>表格顶部工具栏按钮设计规范 <small>Icon Toolbar Buttons · 无背景色</small></h1>
+    <button class="theme-btn" id="themeBtn">切换暗色 / 亮色</button>
+  </div>
+  <p class="lead">基线问题：表格顶部右上角「抓榜 / 拉取 / 新增用户」按钮与左下角筛选 tabs 高度不一、文字按钮与图标按钮混用、彩色背景参差。统一走全局 <code>.tool-btn</code>：<b>图标 + tooltip + 无彩色背景</b>，全部同构为「卡片底 + 细边框」，<b>30×30 / 圆角 4px（与筛选 tabs 同高）</b>，图标使用 @element-plus/icons-vue。</p>
+
+  <!-- 15.1 规格 -->
+  <section class="section">
+    <div class="sec-title"><span class="no">15.1</span> 通用形态 · 规格速览</div>
+    <div class="sec-desc">4px 小圆角 · 30×30 · 无背景色 · icons-vue 图标 · 悬停出 tooltip</div>
+    <div class="spec-grid">
+      <div class="spec-item"><b>尺寸 <code>30×30px</code></b><span>与左下角筛选 tabs 完全同高，两侧齐平</span></div>
+      <div class="spec-item"><b>圆角 <code>4px</code></b><span>小圆角（--r-md），与全站控件一致</span></div>
+      <div class="spec-item"><b>底色 <code>无背景色</code></b><span>卡片底 + 1px 细边框，唯一形态，不设彩色背景变体</span></div>
+      <div class="spec-item"><b>图标 <code>icons-vue 15px</code></b><span>纯图标无文字；由内部 <code>span.ico</code> 承载，便于仅图标旋转</span></div>
+      <div class="spec-item"><b>间距 <code>gap 10px</code></b><span>相邻按钮等距，工具栏右对齐</span></div>
+      <div class="spec-item"><b>落地 <code>全局声明</code></b><span>base.css 声明，禁止组件 scoped 自写（防失效）</span></div>
+    </div>
+  </section>
+
+  <!-- 15.2 统一形态 -->
+  <section class="section">
+    <div class="sec-title"><span class="no">15.2</span> 统一形态 · 图标即语义（无背景色）</div>
+    <div class="sec-desc">功能语义由图标承担，主次只靠图标含义与排列次序，不再用背景色区分。示例图标为 Element Plus Refresh / Download / Plus。</div>
+    <div class="stage" id="stage">
+      <div class="stage-label">同构示例（当前主题）</div>
+      <div class="row-actions">
+        <button class="tool-btn" title="立即抓榜（每周一 00:00 自动抓取 npm 周榜）"><span class="ico"><svg viewBox="0 0 1024 1024" width="15" height="15"><path fill="currentColor" d="M771.776 794.88A384 384 0 0 1 128 512h64a320 320 0 0 0 555.712 216.448H654.72a32 32 0 1 1 0-64h149.056a32 32 0 0 1 32 32v148.928a32 32 0 1 1-64 0v-50.56zM276.288 295.616h92.992a32 32 0 0 1 0 64H220.16a32 32 0 0 1-32-32V178.56a32 32 0 0 1 64 0v50.56A384 384 0 0 1 896.128 512h-64a320 320 0 0 0-555.84-216.384z"/></svg></span></button>
+        <button class="tool-btn" title="一键拉取榜单包最新版到缓存"><span class="ico"><svg viewBox="0 0 1024 1024" width="15" height="15"><path fill="currentColor" d="M160 832h704a32 32 0 1 1 0 64H160a32 32 0 1 1 0-64zm384-578.304V704h-64V247.296L237.248 490.048 192 444.8 512 128l320 316.8-45.312 45.248L544 253.696z"/></svg></span></button>
+        <button class="tool-btn" title="新增用户（立即写入原版 Verdaccio 的 htpasswd）"><span class="ico"><svg viewBox="0 0 1024 1024" width="15" height="15"><path fill="currentColor" d="M480 480V128h64v352h352v64H544v352h-64V544H128v-64z"/></svg></span></button>
+        <span class="gap"></span>
+        <span class="tool-btn" style="cursor:default" title="示例：可扩展 SetUp / Delete / Upload …"><span class="ico"><svg viewBox="0 0 1024 1024" width="15" height="15"><path fill="currentColor" d="M512 64l320 316.8-45.312 45.248L544 253.696V704h-64V247.296L237.248 490.048 192 444.8z"/></svg></span></span>
+      </div>
+      <div class="hint">全部同构：卡片底 + 细边框 + 图标 15px + 圆角 4px + 30×30。悬停任意按钮查看 tooltip 与 hover 效果。</div>
+    </div>
+  </section>
+
+  <!-- 15.3 交互态 -->
+  <section class="section">
+    <div class="sec-title"><span class="no">15.3</span> 交互态</div>
+    <div class="sec-desc">tooltip 必带 · hover 描边与图标转红 · running 仅图标旋转 + 禁用</div>
+    <div class="interact">
+      <div class="ix-card">
+        <div class="name">常态 / hover</div>
+        <div class="cls">.tool-btn / :hover</div>
+        <div class="row-actions">
+          <button class="tool-btn" title="常态：卡片底 + 细边框"><span class="ico"><svg viewBox="0 0 1024 1024" width="15" height="15"><path fill="currentColor" d="M771.776 794.88A384 384 0 0 1 128 512h64a320 320 0 0 0 555.712 216.448H654.72a32 32 0 1 1 0-64h149.056a32 32 0 0 1 32 32v148.928a32 32 0 1 1-64 0v-50.56zM276.288 295.616h92.992a32 32 0 0 1 0 64H220.16a32 32 0 0 1-32-32V178.56a32 32 0 0 1 64 0v50.56A384 384 0 0 1 896.128 512h-64a320 320 0 0 0-555.84-216.384z"/></svg></span></button>
+          <button class="tool-btn" title="hover：描边与图标转红点缀，无上浮" style="border-color:var(--acc);color:var(--acc)"><span class="ico"><svg viewBox="0 0 1024 1024" width="15" height="15"><path fill="currentColor" d="M771.776 794.88A384 384 0 0 1 128 512h64a320 320 0 0 0 555.712 216.448H654.72a32 32 0 1 1 0-64h149.056a32 32 0 0 1 32 32v148.928a32 32 0 1 1-64 0v-50.56zM276.288 295.616h92.992a32 32 0 0 1 0 64H220.16a32 32 0 0 1-32-32V178.56a32 32 0 0 1 64 0v50.56A384 384 0 0 1 896.128 512h-64a320 320 0 0 0-555.84-216.384z"/></svg></span></button>
+        </div>
+        <div class="hint">左=常态，右=hover 效果（边框与图标转 --acc，仅变色）。</div>
+      </div>
+      <div class="ix-card">
+        <div class="name">running（仅图标旋转，边框不动）</div>
+        <div class="cls">.tool-btn.spin:disabled</div>
+        <div class="row-actions">
+          <button class="tool-btn spin" disabled title="正在抓榜中…"><span class="ico"><svg viewBox="0 0 1024 1024" width="15" height="15"><path fill="currentColor" d="M771.776 794.88A384 384 0 0 1 128 512h64a320 320 0 0 0 555.712 216.448H654.72a32 32 0 1 1 0-64h149.056a32 32 0 0 1 32 32v148.928a32 32 0 1 1-64 0v-50.56zM276.288 295.616h92.992a32 32 0 0 1 0 64H220.16a32 32 0 0 1-32-32V178.56a32 32 0 0 1 64 0v50.56A384 384 0 0 1 896.128 512h-64a320 320 0 0 0-555.84-216.384z"/></svg></span></button>
+          <button class="tool-btn" title="另一按钮保持可用"><span class="ico"><svg viewBox="0 0 1024 1024" width="15" height="15"><path fill="currentColor" d="M160 832h704a32 32 0 1 1 0 64H160a32 32 0 1 1 0-64zm384-578.304V704h-64V247.296L237.248 490.048 192 444.8 512 128l320 316.8-45.312 45.248L544 253.696z"/></svg></span></button>
+        </div>
+        <div class="hint">运行中：<b>仅内部图标</b> 1s 线性旋转，按钮本体与边框保持静止；半透明禁用；另一按钮保持可用。</div>
+      </div>
+      <div class="ix-card">
+        <div class="name">tooltip</div>
+        <div class="cls">title 属性</div>
+        <div class="row-actions">
+          <button class="tool-btn" title="立即抓榜（每周一 00:00 自动抓取 npm 周榜）"><span class="ico"><svg viewBox="0 0 1024 1024" width="15" height="15"><path fill="currentColor" d="M771.776 794.88A384 384 0 0 1 128 512h64a320 320 0 0 0 555.712 216.448H654.72a32 32 0 1 1 0-64h149.056a32 32 0 0 1 32 32v148.928a32 32 0 1 1-64 0v-50.56zM276.288 295.616h92.992a32 32 0 0 1 0 64H220.16a32 32 0 0 1-32-32V178.56a32 32 0 0 1 64 0v50.56A384 384 0 0 1 896.128 512h-64a320 320 0 0 0-555.84-216.384z"/></svg></span></button>
+        </div>
+        <div class="hint">悬停显示完整用途（含关键信息），替代文字按钮时代的功能说明。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 对照 -->
+  <section class="section">
+    <div class="sec-title"><span class="no">15.4</span> 对照 · 现状（彩色背景 / 文字按钮） vs 统一（无背景图标）</div>
+    <div class="sec-desc">同尺寸、同圆角、同间距、同背景；禁止与文字按钮混排</div>
+    <div class="duo">
+      <div class="duo-card">
+        <div class="duo-head"><span class="no">✕</span> 参差不齐（旧现状）</div>
+        <div class="duo-row"><span class="lbl">Top 榜单</span><span class="tool-btn-old clean">立即抓榜</span><span class="tool-btn-old ignore">拉取</span></div>
+        <div class="duo-row"><span class="lbl">用户管理</span><span class="text-btn">新增用户</span><span class="tool-btn-old clean" style="height:32px;padding:0 12px">保存</span></div>
+      </div>
+      <div class="duo-card">
+        <div class="duo-head"><span class="ok">✓</span> 统一后（规范）</div>
+        <div class="duo-row"><span class="lbl">Top 榜单</span><button class="tool-btn" title="立即抓榜"><span class="ico"><svg viewBox="0 0 1024 1024" width="15" height="15"><path fill="currentColor" d="M771.776 794.88A384 384 0 0 1 128 512h64a320 320 0 0 0 555.712 216.448H654.72a32 32 0 1 1 0-64h149.056a32 32 0 0 1 32 32v148.928a32 32 0 1 1-64 0v-50.56zM276.288 295.616h92.992a32 32 0 0 1 0 64H220.16a32 32 0 0 1-32-32V178.56a32 32 0 0 1 64 0v50.56A384 384 0 0 1 896.128 512h-64a320 320 0 0 0-555.84-216.384z"/></svg></span></button><button class="tool-btn" title="一键拉取"><span class="ico"><svg viewBox="0 0 1024 1024" width="15" height="15"><path fill="currentColor" d="M160 832h704a32 32 0 1 1 0 64H160a32 32 0 1 1 0-64zm384-578.304V704h-64V247.296L237.248 490.048 192 444.8 512 128l320 316.8-45.312 45.248L544 253.696z"/></svg></span></button></div>
+        <div class="duo-row"><span class="lbl">用户管理</span><button class="tool-btn" title="新增用户"><span class="ico"><svg viewBox="0 0 1024 1024" width="15" height="15"><path fill="currentColor" d="M480 480V128h64v352h352v64H544v352h-64V544H128v-64z"/></svg></span></button><button class="tool-btn" title="同步用户"><span class="ico"><svg viewBox="0 0 1024 1024" width="15" height="15"><path fill="currentColor" d="M771.776 794.88A384 384 0 0 1 128 512h64a320 320 0 0 0 555.712 216.448H654.72a32 32 0 1 1 0-64h149.056a32 32 0 0 1 32 32v148.928a32 32 0 1 1-64 0v-50.56zM276.288 295.616h92.992a32 32 0 0 1 0 64H220.16a32 32 0 0 1-32-32V178.56a32 32 0 0 1 64 0v50.56A384 384 0 0 1 896.128 512h-64a320 320 0 0 0-555.84-216.384z"/></svg></span></button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 实景 -->
+  <section class="section">
+    <div class="sec-title"><span class="no">15.5</span> 场景实景 · 统一后的工具栏</div>
+    <div class="sec-desc">左筛选 tabs 与右图标按钮垂直居中，两侧高度协调</div>
+    <div class="live">
+      <div class="live-bar">
+        <div class="left">
+          <span class="tabs">
+            <span class="tab on">全部</span><span class="tab">待拉取</span><span class="tab">需更新</span><span class="tab">已就绪</span>
+          </span>
+        </div>
+        <div class="right">
+          <span class="live-tag">npm Top1000 周榜</span>
+          <button class="tool-btn" title="立即抓榜（每周一 00:00 自动抓取 npm 周榜）"><span class="ico"><svg viewBox="0 0 1024 1024" width="15" height="15"><path fill="currentColor" d="M771.776 794.88A384 384 0 0 1 128 512h64a320 320 0 0 0 555.712 216.448H654.72a32 32 0 1 1 0-64h149.056a32 32 0 0 1 32 32v148.928a32 32 0 1 1-64 0v-50.56zM276.288 295.616h92.992a32 32 0 0 1 0 64H220.16a32 32 0 0 1-32-32V178.56a32 32 0 0 1 64 0v50.56A384 384 0 0 1 896.128 512h-64a320 320 0 0 0-555.84-216.384z"/></svg></span></button>
+          <button class="tool-btn" title="一键拉取榜单包最新版到缓存"><span class="ico"><svg viewBox="0 0 1024 1024" width="15" height="15"><path fill="currentColor" d="M160 832h704a32 32 0 1 1 0 64H160a32 32 0 1 1 0-64zm384-578.304V704h-64V247.296L237.248 490.048 192 444.8 512 128l320 316.8-45.312 45.248L544 253.696z"/></svg></span></button>
+        </div>
+      </div>
+      <div class="live-bar">
+        <div class="left">
+          <span class="tabs">
+            <span class="tab">全部</span><span class="tab on">Verdaccio Mate</span><span class="tab">verdaccio</span>
+          </span>
+        </div>
+        <div class="right">
+          <span class="live-tag">用户管理</span>
+          <button class="tool-btn" title="新增用户（立即写入原版 Verdaccio 的 htpasswd）"><span class="ico"><svg viewBox="0 0 1024 1024" width="15" height="15"><path fill="currentColor" d="M480 480V128h64v352h352v64H544v352h-64V544H128v-64z"/></svg></span></button>
+          <button class="tool-btn" title="同步用户名（同名不覆盖）"><span class="ico"><svg viewBox="0 0 1024 1024" width="15" height="15"><path fill="currentColor" d="M771.776 794.88A384 384 0 0 1 128 512h64a320 320 0 0 0 555.712 216.448H654.72a32 32 0 1 1 0-64h149.056a32 32 0 0 1 32 32v148.928a32 32 0 1 1-64 0v-50.56zM276.288 295.616h92.992a32 32 0 0 1 0 64H220.16a32 32 0 0 1-32-32V178.56a32 32 0 0 1 64 0v50.56A384 384 0 0 1 896.128 512h-64a320 320 0 0 0-555.84-216.384z"/></svg></span></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 禁忌 -->
+  <section class="section">
+    <div class="sec-title"><span class="no">15.6</span> 禁忌 · 禁止出现在表格顶部工具栏</div>
+    <div class="sec-desc">「卡片底 + 细边框」图标按钮是工具栏唯一合法形态</div>
+    <div class="bad">
+      <div class="bad-card"><div class="t">✕ 彩色背景变体</div><div class="bad-row"><span class="tool-btn-old clean">抓榜</span><span class="tool-btn-old ignore">拉取</span><span class="bad-x">实心 / 软底背景，与统一样式冲突</span></div></div>
+      <div class="bad-card"><div class="t">✕ 文字长按钮</div><div class="bad-row"><span class="text-btn">新增用户</span><span class="bad-x">占位大、与其他图标按钮高度不一</span></div></div>
+      <div class="bad-card"><div class="t">✕ 尺寸 / 圆角不一</div><div class="bad-row"><span class="tool-btn" style="width:34px;height:34px;border-radius:2px"><span class="ico"><svg viewBox="0 0 1024 1024" width="15" height="15"><path fill="currentColor" d="M771.776 794.88A384 384 0 0 1 128 512h64a320 320 0 0 0 555.712 216.448H654.72a32 32 0 1 1 0-64h149.056a32 32 0 0 1 32 32v148.928a32 32 0 1 1-64 0v-50.56zM276.288 295.616h92.992a32 32 0 0 1 0 64H220.16a32 32 0 0 1-32-32V178.56a32 32 0 0 1 64 0v50.56A384 384 0 0 1 896.128 512h-64a320 320 0 0 0-555.84-216.384z"/></svg></span></span><span class="tool-btn" style="width:40px;height:40px"><span class="ico"><svg viewBox="0 0 1024 1024" width="15" height="15"><path fill="currentColor" d="M160 832h704a32 32 0 1 1 0 64H160a32 32 0 1 1 0-64zm384-578.304V704h-64V247.296L237.248 490.048 192 444.8 512 128l320 316.8-45.312 45.248L544 253.696z"/></svg></span></span><span class="bad-x">同工具栏必须 30×30 / 4px 圆角</span></div></div>
+    </div>
+  </section>
+
+  <p class="foot">Verdaccio Mate · 表格顶部工具栏按钮设计规范（无背景色 · 30×30 与 tabs 同高 · 仅图标旋转） · 与 doc/design-spec.md 第 15 章配套</p>
+
+<script>
+  const root = document.documentElement
+  const btn = document.getElementById('themeBtn')
+  btn.addEventListener('click', () => {
+    root.classList.toggle('dark')
+    btn.textContent = root.classList.contains('dark') ? '切换亮色' : '切换暗色'
+  })
+</script>
+</body>
+</html>

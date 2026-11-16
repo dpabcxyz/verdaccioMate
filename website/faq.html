@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FAQ · verdaccioMate</title>
+<meta name="description" content="Verdaccio Mate 常见问题：会不会影响正在运行的原版 Verdaccio、清理权限、占用口径、演示模式、纯内网可用性、MCP Key 泄露处理。更多细节见技术文档。">
+<link rel="canonical" href="http://www.abcxyz.site/verdaccioMate/faq.html">
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+<link rel="alternate icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/img/favicon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png">
+
+<meta name="theme-color" content="#ECEFF4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#141414" media="(prefers-color-scheme: dark)">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Verdaccio Mate">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:url" content="http://www.abcxyz.site/verdaccioMate/faq.html">
+<meta property="og:title" content="常见问题 · Verdaccio Mate 部署与使用答疑">
+<meta property="og:description" content="关于权限、口径、演示模式与 MCP Key 的高频答疑。">
+<meta property="og:image" content="http://www.abcxyz.site/verdaccioMate/assets/img/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="常见问题 · Verdaccio Mate 部署与使用答疑">
+<meta name="twitter:description" content="权限、口径、演示模式与 MCP Key 的高频答疑。">
+<meta name="twitter:image" content="http://www.abcxyz.site/verdaccioMate/assets/img/og-cover.png">
+
+<link rel="stylesheet" href="assets/site.css?v=20261117a">
+<script>
+  (function () {
+    var t = null;
+    try { t = localStorage.getItem('vcm-site-theme'); } catch (e) { /* 存储不可用则跟随系统 */ }
+    var dark = t ? t === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (dark) document.documentElement.classList.add('dark');
+  })();
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "装这个 Verdaccio Mate 会影响正在运行的原版 Verdaccio 吗？",
+      "acceptedAnswer": { "@type": "Answer", "text": "不会。不修改原版 Verdaccio 的配置、不接管端口、也不要求重启，只共享同一份存储目录。扫描是纯读取；只有清理低版本才删除 .tgz 并回写元数据，且由你在 Verdaccio Mate 里确认后才发生。" }
+    },
+    {
+      "@type": "Question",
+      "name": "缓存目录只读挂载能用吗？",
+      "acceptedAnswer": { "@type": "Answer", "text": "查看与扫描可以，清理不行。删除低版本要移除 .tgz 并回写包元数据，只读挂载会报 EROFS；实际部署常用 user: \"0:0\" 以 root 运行，原因见技术文档的部署与配置篇。" }
+    },
+    {
+      "@type": "Question",
+      "name": "概览页的占用为什么比 du -sh 小？",
+      "acceptedAnswer": { "@type": "Answer", "text": "口径不同。统计卡与排行的体积是包内 .tgz 归档合计，不含 package.json 等文件；真实磁盘占用看 diskMb / diskBytes。" }
+    },
+    {
+      "@type": "Question",
+      "name": "纯内网、不能出公网的环境能用吗？",
+      "acceptedAnswer": { "@type": "Answer", "text": "治理部分完全可用：扫描、来源识别、预警、清理、检索、日志都不依赖外网。npm Top1000 周榜与批量拉取需要相应出网能力，纯内网下对应页面保持空态即可。" }
+    },
+    {
+      "@type": "Question",
+      "name": "不配置 VERDACCIO_STORAGE 会怎样？",
+      "acceptedAnswer": { "@type": "Answer", "text": "后端进入演示模式：使用内置演示数据并禁止拉取，界面数据带 demo 标记，方便先看形态再接真目录。" }
+    },
+    {
+      "@type": "Question",
+      "name": "MCP Key 泄露了怎么办？",
+      "acceptedAnswer": { "@type": "Answer", "text": "在 Verdaccio Mate 的 MCP 接入里立即吊销，下一次请求即失效；一期开放的全部是只读查询工具，不涉及删除与改用户。" }
+    },
+    {
+      "@type": "Question",
+      "name": "要备份什么？升级会不会丢数据？",
+      "acceptedAnswer": { "@type": "Answer", "text": "备份 DATA_DIR 整个目录（含 SQLite 与 MCP Key 主密钥）。镜像无状态，换 tag 重启即可升级，回滚时保留数据目录再换旧镜像。" }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">跳至主要内容</a>
+
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="index.html">
+      <img src="assets/img/logo.svg" alt="Verdaccio Mate 标识" width="34" height="34">
+      <span class="brand-text">
+        <span class="brand-name">Verdaccio Mate</span>
+        <span class="brand-sub">原版 Verdaccio 的得力伙伴</span>
+      </span>
+    </a>
+    <nav class="nav" aria-label="主导航">
+      <a href="index.html">首页</a>
+      <a href="docs.html">技术文档</a>
+      <a href="faq.html" aria-current="page">FAQ</a>
+    </nav>
+    <button class="theme-btn" id="theme-toggle" type="button" aria-label="切换到深色主题" title="切换主题">
+      <svg class="icon-moon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 8.8 9.8z"/></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero sub">
+    <div class="wrap">
+      <h1>部署与使用中的<em>七件高频事</em></h1>
+      <p class="hero-lead">
+        每条只讲结论；并发保护、权限模型与口径细节都在<a href="docs.html">技术文档</a>里写全了。
+      </p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 8px">
+    <div class="wrap">
+      <h2 class="visually-hidden">问答列表</h2>
+
+      <details class="faq-item">
+        <summary>装这个 Verdaccio Mate 会影响正在运行的原版 Verdaccio 吗？</summary>
+        <div class="body">
+          <p>不会。不改配置、不接管端口、也不要求重启，只共享同一份存储目录。扫描是纯读取；只有清理低版本才删除 <code>.tgz</code> 并回写元数据，且由你在 Verdaccio Mate 里确认后才发生。</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>缓存目录只读挂载能用吗？</summary>
+        <div class="body">
+          <p>查看与扫描可以，清理不行——删除低版本要移除 <code>.tgz</code> 并回写包元数据，只读挂载会报 <code>EROFS</code>。实际部署常用 <code>user: "0:0"</code> 以 root 运行，原因见<a href="docs.html#deployment">技术文档 · 部署与配置</a>。</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>概览页的占用为什么比 <code>du -sh</code> 小？</summary>
+        <div class="body">
+          <p>口径不同。统计卡与排行的体积是包内 <code>.tgz</code> 归档合计，不含 <code>package.json</code> 等文件；真实磁盘占用看 <code>diskMb</code> / <code>diskBytes</code>。</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>纯内网、不能出公网的环境能用吗？</summary>
+        <div class="body">
+          <p>治理部分完全可用：扫描、来源识别、预警、清理、检索、日志都不依赖外网。npm Top1000 周榜与批量拉取需要相应出网能力，纯内网下对应页面保持空态即可。</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>不配置 <code>VERDACCIO_STORAGE</code> 会怎样？</summary>
+        <div class="body">
+          <p>后端进入演示模式：使用内置演示数据并禁止拉取，界面数据带 <code>demo</code> 标记，方便先看形态再接真目录。</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>MCP Key 泄露了怎么办？</summary>
+        <div class="body">
+          <p>在 Verdaccio Mate 的「MCP 接入」里立即吊销，下一次请求即失效；一期开放的全部是只读查询工具，不涉及删除与改用户。</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>要备份什么？升级会不会丢数据？</summary>
+        <div class="body">
+          <p>备份 <code>DATA_DIR</code> 整个目录（含 SQLite 与 MCP Key 主密钥）。镜像无状态，换 tag 重启即可升级；回滚时保留数据目录再换旧镜像。</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section class="section closer">
+    <div class="wrap">
+      <h2>还有问题</h2>
+      <p>账号机制、部署参数与 MCP 行为按代码实际行为写在技术文档里。</p>
+      <div class="hero-cta">
+        <a class="btn primary" href="docs.html">阅读技术文档</a>
+        <a class="btn" href="index.html#features">看功能一览</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-in">
+    <span>Verdaccio Mate · 原版 Verdaccio 的得力伙伴</span>
+    <nav aria-label="页脚导航">
+      <a href="docs.html">技术文档</a>
+      <a href="faq.html">FAQ</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="assets/site.js?v=20261117a" defer></script>
+</body>
+</html>
