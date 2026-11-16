@@ -310,7 +310,7 @@ html.dark .btn.primary:hover { color: #141414; }
 .section + .section { border-top: 1px solid var(--line); }
 .sec-head { margin-bottom: 24px; }
 .sec-head h2 {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 600;
   letter-spacing: -.3px;
   display: flex;
@@ -318,6 +318,7 @@ html.dark .btn.primary:hover { color: #141414; }
   gap: 10px;
 }
 .sec-icon { width: 20px; height: 20px; color: var(--acc); flex-shrink: 0; }
+.sec-icon.zap { width: 24px; height: 24px; }
 .sec-head p { margin-top: 8px; font-size: 13.5px; color: var(--ink-dim); max-width: 60em; }
 .eyebrow {
   font-family: var(--num);
@@ -581,7 +582,7 @@ html.dark .steps li::before { color: #141414; }
   .hero-lead { font-size: 14px; }
   .g-2, .g-3, .g-4 { grid-template-columns: minmax(0, 1fr); }
   .section { padding: 32px 0; }
-  .sec-head h2 { font-size: 20px; }
+  .sec-head h2 { font-size: 18px; }
   .btn { padding: 10px 14px; }
   .footer nav { margin-left: 0; }
 }

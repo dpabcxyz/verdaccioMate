@@ -390,7 +390,6 @@ html.dark .remark.ok { color: var(--suc); }
 .remark.warn { color: var(--warn); }
 .remark.bad { color: var(--dgr); }
 .remark.dim { color: var(--ink-faint); }
-}
 .cell-time { font-size: 12.5px; color: var(--ink-dim); white-space: nowrap; }
 
 .empty-state {

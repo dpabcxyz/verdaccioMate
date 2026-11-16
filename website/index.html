@@ -111,7 +111,7 @@
       <p class="hero-lead">
         原版 Verdaccio 只负责存取，不提供治理能力：缓存目录是黑盒，版本随安装无限膨胀，超量版本只能进目录手工删除，
         私有包与代理缓存包混在一起分不清。Verdaccio Mate 直接挂载它的存储目录，把这些补齐成一套 Verdaccio Mate——
-        扫描、识别、预警、清理、预置、审计，外加一个只读 MCP 端点让 AI 客户端也能查私服。
+        扫描、识别、预警、清理、预置、审计，并原生内置 MCP，把私服直接接进 AI 工作流。
       </p>
     </div>
   </section>
@@ -125,10 +125,10 @@
     </div>
   </section>
 
-  <section class="section">
+  <section class="section" id="problems">
     <div class="wrap">
       <div class="sec-head">
-        <h2><svg class="sec-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>四类问题，四类解法</h2>
+        <h2><svg class="sec-icon zap" viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>四类问题，四类解法</h2>
       </div>
       <div class="grid g-2">
         <article class="card pain">
@@ -154,8 +154,7 @@
   <section class="section" id="features">
     <div class="wrap">
       <div class="sec-head">
-        <h2><svg class="sec-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>13 项能力，一句话讲完</h2>
-        <p>每项能力的数据口径、并发行为与边界都写在技术文档里，这里只回答「它做什么」。</p>
+        <h2><svg class="sec-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>13 项能力</h2>
       </div>
       <div class="grid g-3">
         <article class="card"><h3>缓存扫描</h3><p>异步扫描存储目录，增量复用上次结果，实时呈现进度。</p></article>
@@ -170,15 +169,15 @@
         <article class="card"><h3>用户管理</h3><p>读写原版 Verdaccio 的 htpasswd，其用户可直接登录。</p></article>
         <article class="card"><h3>定时任务</h3><p>每日凌晨自动扫描、每周一抓取周榜，失败自动冷却。</p></article>
         <article class="card"><h3>只读 MCP 工具</h3><p>8 个查询工具开放给 AI 客户端，详见<a href="docs.html#mcp"> MCP 接入</a>。</p></article>
-        <article class="card"><h3>三端三主题</h3><p>亮暗双主题、按日出日落自动切换，桌面平板手机一套代码。</p></article>
+        <article class="card"><h3>三端两主题</h3><p>亮暗双主题、按日出日落自动切换，桌面平板手机一套代码。</p></article>
       </div>
     </div>
   </section>
 
-  <section class="section">
+  <section class="section" id="themes">
     <div class="wrap">
       <div class="sec-head">
-        <h2><svg class="sec-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>同一套界面，三端三主题</h2>
+        <h2><svg class="sec-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" fill-rule="evenodd" aria-hidden="true"><path d="M2 5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5zm2 0v10h16V5H4zm8 12.5a1 1 0 0 0-1 1V20h-3a1 1 0 1 0 0 2h8a1 1 0 1 0 0-2h-3v-1.5a1 1 0 0 0-1-1z"/></svg>同一套界面，三端两主题</h2>
         <p>亮色默认、暗色对齐 Element Plus 暗色变量，也可按部署地日出日落自动切换；桌面、平板、手机共用一套代码。</p>
       </div>
       <div class="grid g-2">
@@ -204,10 +203,10 @@
     </div>
   </section>
 
-  <section class="section">
+  <section class="section" id="ai">
     <div class="wrap">
       <div class="sec-head">
-        <h2><svg class="sec-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="8" width="16" height="12" rx="2"/><line x1="12" y1="8" x2="12" y2="4"/><circle cx="12" cy="3" r="1"/><line x1="8" y1="13.5" x2="8" y2="13.51"/><line x1="16" y1="13.5" x2="16" y2="13.51"/><path d="M9.5 17h5"/></svg>拥抱AI</h2>
+        <h2><svg class="sec-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" fill-rule="evenodd" aria-hidden="true"><circle cx="12" cy="3" r="1.5"/><path d="M4 8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2H4zm4 5.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm8 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zM9.5 16.5a1 1 0 0 0 0 2h5a1 1 0 1 0 0-2h-5z"/></svg>拥抱AI</h2>
         <p>Verdaccio Mate 暴露一个 Streamable HTTP 端点 <code class="num">/mcp</code>，用只读 Key 认证。一期开放 8 个查询工具，不提供删除、清理或改用户的能力。</p>
       </div>
       <div class="grid g-2">
@@ -227,10 +226,10 @@
     </div>
   </section>
 
-  <section class="section">
+  <section class="section" id="deploy">
     <div class="wrap">
       <div class="sec-head">
-        <h2><svg class="sec-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>部署</h2>
+        <h2><svg class="sec-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" fill-rule="evenodd" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zM4.02 11a8 8 0 0 1 3.61-5.71A13 13 0 0 0 10 11H4.02zm0 2H10a13 13 0 0 0-2.37 5.71A8 8 0 0 1 4.02 13zm15.96-2h-5.98a13 13 0 0 1 2.37-5.71A8 8 0 0 1 19.98 13zM14 13h5.98a8 8 0 0 1-3.61 5.71A13 13 0 0 1 14 13zm-2-8.35C10.6 6.4 9.43 9.05 9.1 13h5.8c-.33-3.95-1.5-6.6-2.9-8.35zm-.9 18.7c1.4-1.75 2.57-4.4 2.9-8.35H9.1c.33 3.95 1.5 6.6 2.9 8.35z"/></svg>部署</h2>
       </div>
       <ol class="steps">
         <li><b>构建前端</b>：<code class="num">cd frontend &amp;&amp; npm install &amp;&amp; npm run build</code>，产物随后拷进镜像。</li>
